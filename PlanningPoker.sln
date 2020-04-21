@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{5744EF4B-E2AD-4191-A080-55921A9503D4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Backend\Shared\Shared.csproj", "{0AEDFA71-9C3D-4028-8C48-AA12E549C0D6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CommandSide", "CommandSide", "{F28CFCD7-6834-4035-87A2-E0A5F36D6B17}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication", "Backend\CommandSide\WebApplication\WebApplication.csproj", "{1E30A60E-603E-40BA-B0B9-10E107DC8614}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "QuerySide", "QuerySide", "{60FBDDD9-EB77-4F3A-83C9-D7B2990B6836}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSocketNotifier", "Backend\QuerySide\WebSocketNotifier\WebSocketNotifier.csproj", "{AAE46560-B8CB-47BE-B6A3-D4B0661448AE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0AEDFA71-9C3D-4028-8C48-AA12E549C0D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AEDFA71-9C3D-4028-8C48-AA12E549C0D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AEDFA71-9C3D-4028-8C48-AA12E549C0D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AEDFA71-9C3D-4028-8C48-AA12E549C0D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E30A60E-603E-40BA-B0B9-10E107DC8614}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E30A60E-603E-40BA-B0B9-10E107DC8614}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E30A60E-603E-40BA-B0B9-10E107DC8614}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E30A60E-603E-40BA-B0B9-10E107DC8614}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAE46560-B8CB-47BE-B6A3-D4B0661448AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAE46560-B8CB-47BE-B6A3-D4B0661448AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAE46560-B8CB-47BE-B6A3-D4B0661448AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAE46560-B8CB-47BE-B6A3-D4B0661448AE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0AEDFA71-9C3D-4028-8C48-AA12E549C0D6} = {5744EF4B-E2AD-4191-A080-55921A9503D4}
+		{F28CFCD7-6834-4035-87A2-E0A5F36D6B17} = {5744EF4B-E2AD-4191-A080-55921A9503D4}
+		{1E30A60E-603E-40BA-B0B9-10E107DC8614} = {F28CFCD7-6834-4035-87A2-E0A5F36D6B17}
+		{60FBDDD9-EB77-4F3A-83C9-D7B2990B6836} = {5744EF4B-E2AD-4191-A080-55921A9503D4}
+		{AAE46560-B8CB-47BE-B6A3-D4B0661448AE} = {60FBDDD9-EB77-4F3A-83C9-D7B2990B6836}
+	EndGlobalSection
+EndGlobal
