@@ -1,0 +1,94 @@
+{
+	"info": {
+		"_postman_id": "7e8ad28b-5e33-4af5-8aa8-f6fe87569fa1",
+		"name": "EventSourcingWorkshop",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Session.Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:20000/Session/Create",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "20000",
+					"path": [
+						"Session",
+						"Create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Session.Vote",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"SessionId\" : \"78783bf6-4111-4582-b0ff-551289a2a376\",\n\t\"UserName\" : \"Danijel\",\n\t\"Points\": 10\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:20000/Session/Vote",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "20000",
+					"path": [
+						"Session",
+						"Vote"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Session.Clear",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:20000/Session/Clear?sessionId=78783bf6-4111-4582-b0ff-551289a2a376",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "20000",
+					"path": [
+						"Session",
+						"Clear"
+					],
+					"query": [
+						{
+							"key": "sessionId",
+							"value": "78783bf6-4111-4582-b0ff-551289a2a376"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
