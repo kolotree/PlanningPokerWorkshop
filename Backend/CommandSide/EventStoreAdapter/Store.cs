@@ -6,6 +6,7 @@ using Domain;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
 using Ports;
+using Shared;
 
 namespace EventStoreAdapter
 {
@@ -27,11 +28,41 @@ namespace EventStoreAdapter
             return new Store(connection);
         }
 
+        public async Task<T> Load<T>(string id) where T : AggregateRoot, new()
+        {
+            var streamEventsSlice = await _connection.ReadStreamEventsForwardAsync(
+                id.ToStreamName<T>(),
+                0,
+                1024,
+                false);
+
+            var domainEvents = streamEventsSlice.Events.Select(resolvedEvent =>
+            {
+                var metaData =JsonConvert.DeserializeObject<EventMetaData>(Encoding.UTF8.GetString(resolvedEvent.Event.Metadata));
+                return (IDomainEvent) JsonConvert.DeserializeObject(
+                    Encoding.UTF8.GetString(resolvedEvent.Event.Data),
+                    Type.GetType(metaData.AssemblyQualifiedName));
+            }).ToList();
+
+            if (domainEvents.Count == 0)
+            {
+                throw new AggregateDoesntExistException();
+            }
+
+            var aggregate = new T();
+            foreach (var domainEvent in domainEvents)
+            {
+                aggregate.Apply(domainEvent);
+            }
+
+            return aggregate;
+        }
+
         public async Task SaveChanges<T>(T aggregate) where T : AggregateRoot
         {
             var result = await _connection.ConditionalAppendToStreamAsync(
                 aggregate.ToStreamName(),
-                -1,
+                aggregate.OriginalVersion,
                 aggregate.UncommittedChanges.Select(domainEvent =>
                     new EventData(
                         Guid.NewGuid(), 
@@ -47,16 +78,6 @@ namespace EventStoreAdapter
                 case ConditionalWriteStatus.StreamDeleted:
                     throw new StreamDeletedException();
             }
-        }
-    }
-
-    internal sealed partial class EventMetaData
-    {
-        public string AssemblyName { get; }
-
-        public EventMetaData(string assemblyName)
-        {
-            AssemblyName = assemblyName;
         }
     }
 }

@@ -13,10 +13,15 @@ namespace Domain
 
         public long OriginalVersion => _version - UncommittedChanges.Count;
 
-        protected void Apply(IDomainEvent domainEvent)
+        protected void ApplyChange(IDomainEvent domainEvent)
+        {
+            _uncommittedChanged.Add(domainEvent);
+            Apply(domainEvent);
+        }
+
+        public void Apply(IDomainEvent domainEvent)
         {
             When(domainEvent);
-            _uncommittedChanged.Add(domainEvent);
             _version++;
         }
         

@@ -29,8 +29,9 @@ namespace WebApplication.Controllers
 
         [HttpPost]
         [Route(nameof(Vote))]
-        public IActionResult Vote([FromBody] VoteDto voteDto)
+        public async Task<IActionResult> Vote([FromBody] VoteDto voteDto)
         {
+            await new VoteHandler(_store).Execute(voteDto.ToVote());
             return Ok(new { });
         }
         
