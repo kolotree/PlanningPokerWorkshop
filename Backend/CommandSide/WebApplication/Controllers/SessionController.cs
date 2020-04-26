@@ -20,8 +20,8 @@ namespace WebApplication.Controllers
         }
         
         [HttpPost]
-        [Route(nameof(CreateSession))]
-        public async Task<IActionResult> CreateSession()
+        [Route(nameof(Create))]
+        public async Task<IActionResult> Create()
         {
             var newSessionId = NewGuid();
             await new CreateSessionHandler(_store).Execute(new CreateSession(newSessionId));
