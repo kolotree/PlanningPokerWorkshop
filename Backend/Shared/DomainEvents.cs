@@ -18,11 +18,13 @@ namespace Shared
         {
             public Guid SessionId { get; }
             public string Member { get; }
+            public int Points { get; }
 
-            public MemberVoted(Guid sessionId, string member)
+            public MemberVoted(Guid sessionId, string member, int points)
             {
                 SessionId = sessionId;
                 Member = member;
+                Points = points;
             }
         }
 
