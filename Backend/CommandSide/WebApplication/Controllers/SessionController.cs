@@ -1,6 +1,9 @@
-﻿using System;
+﻿using System.Threading.Tasks;
+using ApplicationServices;
 using Microsoft.AspNetCore.Mvc;
+using Ports;
 using WebApplication.Controllers.Dto;
+using static System.Guid;
 
 namespace WebApplication.Controllers
 {
@@ -8,11 +11,20 @@ namespace WebApplication.Controllers
     [Route("[controller]")]
     public sealed class SessionController : ControllerBase
     {
+        private readonly IStore _store;
+
+        public SessionController(IStore store)
+        {
+            _store = store;
+        }
+        
         [HttpPost]
         [Route(nameof(CreateSession))]
-        public IActionResult CreateSession()
+        public async Task<IActionResult> CreateSession()
         {
-            return Ok(new {SessionId = Guid.NewGuid()});
+            var newSessionId = NewGuid();
+            await new CreateSessionHandler(_store).Execute(new CreateSession(newSessionId));
+            return Ok(new {SessionId = newSessionId});
         }
 
         [HttpPost]

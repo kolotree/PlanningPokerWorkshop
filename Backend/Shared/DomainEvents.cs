@@ -4,7 +4,7 @@ namespace Shared
 {
     public static class DomainEvents
     {
-        public sealed class SessionCreated
+        public sealed class SessionCreated : IDomainEvent
         {
             public Guid SessionId { get; }
 
@@ -14,7 +14,7 @@ namespace Shared
             }
         }
 
-        public sealed class MemberVoted
+        public sealed class MemberVoted : IDomainEvent
         {
             public Guid SessionId { get; }
             public string Member { get; }
@@ -28,7 +28,7 @@ namespace Shared
             }
         }
 
-        public sealed class SessionCleared
+        public sealed class SessionCleared : IDomainEvent
         {
             public Guid SessionId { get; }
 
