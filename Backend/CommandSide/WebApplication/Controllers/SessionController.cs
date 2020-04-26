@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using ApplicationServices;
 using Microsoft.AspNetCore.Mvc;
 using Ports;
@@ -37,8 +38,9 @@ namespace WebApplication.Controllers
         
         [HttpPost]
         [Route(nameof(Clear))]
-        public IActionResult Clear(string sessionId)
+        public async Task<IActionResult> Clear(Guid sessionId)
         {
+            await new ClearSessionHandler(_store).Execute(new ClearSession(sessionId));
             return Ok(new { });
         }
     }

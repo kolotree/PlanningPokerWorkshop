@@ -28,6 +28,14 @@ namespace Domain
             }
         }
 
+        public void Clear()
+        {
+            if (_votes.Count != 0)
+            {
+                ApplyChange(new DomainEvents.SessionCleared(_id));
+            }
+        }
+
         public override void When(IDomainEvent e)
         {
             switch (e)
@@ -36,6 +44,7 @@ namespace Domain
                     _votes[memberVoted.Member] = memberVoted.Points;
                     break;
                 case DomainEvents.SessionCleared sessionCleared:
+                    _votes.Clear();
                     break;
                 case DomainEvents.SessionCreated sessionCreated:
                     _id = sessionCreated.SessionId;
