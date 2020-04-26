@@ -7,11 +7,28 @@ namespace Domain
     public sealed class Session : AggregateRoot
     {
         private Guid _id = Guid.Empty;
-        
-        private Dictionary<string, int> _votes = new Dictionary<string, int>();
+        private readonly Dictionary<string, int> _votes = new Dictionary<string, int>();
 
         public override string Id => _id.ToString();
-        
+
+        public override void When(IDomainEvent e)
+        {
+            switch (e)
+            {
+                case DomainEvents.MemberVoted memberVoted:
+                    _votes[memberVoted.Member] = memberVoted.Points;
+                    break;
+                case DomainEvents.SessionCleared sessionCleared:
+                    _votes.Clear();
+                    break;
+                case DomainEvents.SessionCreated sessionCreated:
+                    _id = sessionCreated.SessionId;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(e));
+            }
+        }
+
         public static Session NewOf(Guid sessionId)
         {
             var session = new Session();
@@ -33,24 +50,6 @@ namespace Domain
             if (_votes.Count != 0)
             {
                 ApplyChange(new DomainEvents.SessionCleared(_id));
-            }
-        }
-
-        public override void When(IDomainEvent e)
-        {
-            switch (e)
-            {
-                case DomainEvents.MemberVoted memberVoted:
-                    _votes[memberVoted.Member] = memberVoted.Points;
-                    break;
-                case DomainEvents.SessionCleared sessionCleared:
-                    _votes.Clear();
-                    break;
-                case DomainEvents.SessionCreated sessionCreated:
-                    _id = sessionCreated.SessionId;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(e));
             }
         }
     }
