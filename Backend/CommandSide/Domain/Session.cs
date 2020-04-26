@@ -18,7 +18,7 @@ namespace Domain
                 case DomainEvents.MemberVoted memberVoted:
                     _votes[memberVoted.Member] = memberVoted.Points;
                     break;
-                case DomainEvents.SessionCleared sessionCleared:
+                case DomainEvents.SessionCleared _:
                     _votes.Clear();
                     break;
                 case DomainEvents.SessionCreated sessionCreated:
