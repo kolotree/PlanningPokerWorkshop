@@ -1,5 +1,8 @@
+using System;
+using EventStore.ClientAPI;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Ports;
 
 namespace WebSocketNotifier
 {
@@ -14,11 +17,26 @@ namespace WebSocketNotifier
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
+                    var connectionString = new Uri(hostContext.Configuration["AppSettings:EventStoreConnectionString"]);
+                    
+                    var connection = EventStoreConnection.Create(
+                        ConnectionSettings.Create().KeepReconnecting(),
+                        connectionString);
+                    
+                    connection.ConnectAsync().Wait();
+                    
+                    services.AddSingleton(connection);
+                    services.WireUpEventStoreReader();
                     services.WireUpClientNotifier();
                     services.WireUpEventHandler();
-                    var connectionString = hostContext.Configuration["AppSettings:EventStoreConnectionString"];
-                    services.WireUpEventReader(connectionString);
                     services.AddHostedService<Worker>();
+
+                    var serviceProvider = services.BuildServiceProvider();
+                    
+                    var eventReader = serviceProvider.GetService<IEventStoreReader>();
+                    var webSocketClientNotifier = serviceProvider.GetService<IClientNotifier>();
+                    
+                    webSocketClientNotifier.StartClientNotifier(sessionId => eventReader.SubscribeTo($"Session|{sessionId}"));
                 });
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Specialized;
 using Ports;
 using WebSocketSharp;
@@ -10,16 +10,18 @@ namespace WebSocketAdapter
     {
         private WebSocketServer _webSocketServer;
         private readonly SocketsHub _socketsHub;
+        private Action<string> _newClientConnectedCallback;
 
         public WebSocketClientNotifier()
         {
             _socketsHub = new SocketsHub();
         }
 
-        public void StartClientNotifier()
+        public void StartClientNotifier(Action<string> newClientConnectedCallback)
         {
             _webSocketServer = InitializeWebSocketServer();
             _webSocketServer.Start();
+            _newClientConnectedCallback = newClientConnectedCallback;
         }
 
         public void NotifyAllClients(string sessionId, string message) => 
@@ -35,10 +37,10 @@ namespace WebSocketAdapter
         private void OnConnectionOpened(WebSocket socket, NameValueCollection queryString)
         {
             var sessionId = queryString["sessionId"];
-            if (sessionId != null)
-            {
-                _socketsHub.Add(sessionId, socket);
-            }
+            if (sessionId == null) return;
+            
+            _newClientConnectedCallback(sessionId);
+            _socketsHub.Add(sessionId, socket);
         }
 
         private void OnConnectionClosed(WebSocket socket, NameValueCollection queryString)

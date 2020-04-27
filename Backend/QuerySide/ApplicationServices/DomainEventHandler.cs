@@ -24,7 +24,12 @@ namespace ApplicationServices
                 _ => throw new ArgumentException("Undefined event type")
             };
 
-            var eventJson = JsonConvert.SerializeObject(domainEvent);
+            var eventJson = JsonConvert.SerializeObject(new
+            {
+                Type = domainEvent.GetType().Name,
+                Data = domainEvent
+            });
+            
             _clientNotifier.NotifyAllClients(sessionId, eventJson);
         }
     }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Text;
 using EventStore.ClientAPI;
 using Newtonsoft.Json;
@@ -10,32 +10,23 @@ namespace EventStoreAdapter
     public sealed class EventStoreReader : IEventStoreReader
     {
         private readonly IEventStoreConnection _connection;
+        private readonly IEventStoreStreamMessageReceiver _messageReceiver;
 
-        private EventStoreReader(IEventStoreConnection connection)
+        public EventStoreReader(
+            IEventStoreConnection connection, 
+            IEventStoreStreamMessageReceiver messageReceiver)
         {
             _connection = connection;
-            _connection.ConnectAsync().Wait();
+            _messageReceiver = messageReceiver;
         }
 
-        public static EventStoreReader BuildUsing(Uri connectionString)
-        {
-            var connection = EventStoreConnection.Create(
-                ConnectionSettings.Create().KeepReconnecting(),
-                connectionString);
-
-            return new EventStoreReader(connection);
-        }
-
-        public IEventStoreSubscription SubscribeTo(
-            string sourceStreamName,
-            long startPosition,
-            IEventStoreStreamMessageReceiver receiver)
+        public IEventStoreSubscription SubscribeTo(string sourceStreamName, long startPosition = -1)
         {
             var catchUpSubscription = _connection.SubscribeToStreamFrom(
                 sourceStreamName,
                 startPosition == -1 ? null : (long?) startPosition,
                 CatchUpSubscriptionSettings.Default,
-                (_, x) => receiver.Receive(Convert(x)));
+                (_, x) => _messageReceiver.Receive(Convert(x)));
 
             return new EventStoreSubscription(catchUpSubscription);
         }
