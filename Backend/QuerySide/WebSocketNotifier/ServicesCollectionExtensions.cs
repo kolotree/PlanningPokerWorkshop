@@ -17,9 +17,9 @@ namespace WebSocketNotifier
             services.AddSingleton(typeof(IClientNotifier), webSocketClientNotifier);
         }
         
-        public static void WireUpEventReader(this IServiceCollection services)
+        public static void WireUpEventReader(this IServiceCollection services, string connectionString)
         {
-            var eventReader = EventStoreReader.BuildUsing(new Uri("tcp://admin:changeit@localhost:1113"));
+            var eventReader = EventStoreReader.BuildUsing(new Uri(connectionString));
             services.AddSingleton(typeof(IEventStoreReader), eventReader);
         }
 

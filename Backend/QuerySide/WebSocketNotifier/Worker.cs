@@ -18,7 +18,7 @@ namespace WebSocketNotifier
             IEventStoreStreamMessageReceiver domainEventHandler)
         {
             _logger = logger;
-            eventStoreReader.SubscribeTo("SomeAggregate", -1, domainEventHandler);
+            eventStoreReader.SubscribeTo("Session|83b94787-0479-4f06-9bf1-a3acb546e2c5", -1, domainEventHandler);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
