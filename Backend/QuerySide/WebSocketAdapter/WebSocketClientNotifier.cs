@@ -38,7 +38,6 @@ namespace WebSocketAdapter
             if (sessionId != null)
             {
                 _socketsHub.Add(sessionId, socket);
-                _socketsHub.NotifyAll(sessionId, "testing");
             }
         }
 
