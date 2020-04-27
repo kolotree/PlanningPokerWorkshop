@@ -10,6 +10,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\ApplicationServices\ApplicationServices.csproj" />
+      <ProjectReference Include="..\EventStoreAdapter\EventStoreAdapter.csproj" />
       <ProjectReference Include="..\WebSocketAdapter\WebSocketAdapter.csproj" />
     </ItemGroup>
 </Project>

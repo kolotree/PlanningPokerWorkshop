@@ -1,7 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Ports;
-using WebSocketAdapter;
 
 namespace WebSocketNotifier
 {
@@ -16,10 +14,9 @@ namespace WebSocketNotifier
             Host.CreateDefaultBuilder(args)
                 .ConfigureServices((hostContext, services) =>
                 {
-                    var webSocketClientNotifier = new WebSocketClientNotifier();
-                    webSocketClientNotifier.StartClientNotifier();
-
-                    services.AddSingleton(typeof(IClientNotifier), webSocketClientNotifier);
+                    services.WireUpClientNotifier();
+                    services.WireUpEventHandler();
+                    services.WireUpEventReader();
                     services.AddHostedService<Worker>();
                 });
     }
