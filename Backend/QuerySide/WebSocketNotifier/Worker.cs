@@ -1,6 +1,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Ports;
@@ -14,10 +15,12 @@ namespace WebSocketNotifier
         public Worker(
             ILogger<Worker> logger, 
             IEventStoreReader eventStoreReader, 
-            IEventStoreStreamMessageReceiver domainEventHandler)
+            IEventStoreStreamMessageReceiver domainEventHandler,
+            IConfiguration configuration)
         {
             _logger = logger;
-            eventStoreReader.SubscribeTo("Session|83b94787-0479-4f06-9bf1-a3acb546e2c5", -1, domainEventHandler);
+            var sourceStreamName = configuration["AppSettings:AllSessionEventsProjectionName"];
+            eventStoreReader.SubscribeTo(sourceStreamName, -1, domainEventHandler);
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
